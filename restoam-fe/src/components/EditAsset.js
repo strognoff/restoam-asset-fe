@@ -9,12 +9,14 @@ function EditAsset() {
     name: '',
     description: '',
     location: '',
-    cost: '0',
+    valueAmount: '0',
+    valueCurrency: 'GBP',
+    createdDate: ''
   });
 
   useEffect(() => {
     // Fetch the asset details to populate the form
-    axios.get(`http://localhost:8080/restoam/${id}`)
+    axios.get(`http://localhost:8080/restoam/assets/${id}`)
       .then(response => {
         setFormData(response.data);
       })
@@ -31,7 +33,7 @@ function EditAsset() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8080/restoam/`, { ...formData, id })
+    axios.put(`http://localhost:8080/restoam/assets/${id}`, { ...formData, id })
       .then(() => {
         alert('Asset updated successfully!');
         navigate('/'); // Redirect to the asset list
@@ -83,15 +85,41 @@ function EditAsset() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="cost">Cost</label>
+          <label htmlFor="valueAmount">Value Amount</label>
           <input
             type="number"
             className="form-control"
-            id="cost"
-            name="cost"
-            value={formData.cost}
+            id="valueAmount"
+            name="valueAmount"
+            value={formData.valueAmount}
             onChange={handleChange}
             required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="valueCurrency">Currency</label>
+          <select
+            className="form-control"
+            id="valueCurrency"
+            name="valueCurrency"
+            value={formData.valueCurrency}
+            onChange={handleChange}
+            required
+          >
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="BRL">BRL</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="createdDate">Created Date</label>
+          <input
+            type="text"
+            className="form-control"
+            id="createdDate"
+            name="createdDate"
+            value={formData.createdDate ? new Date(formData.createdDate).toLocaleString() : ''}
+            readOnly
           />
         </div>
         <button type="submit" className="btn btn-primary">Update</button>

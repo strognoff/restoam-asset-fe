@@ -7,7 +7,8 @@ function AddAsset() {
     name: '',
     description: '',
     location: '',
-    cost: '0'
+    valueAmount: '0',
+    valueCurrency: 'GBP'
   });
 
   
@@ -15,20 +16,20 @@ function AddAsset() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Validate the cost field to allow only numbers
-    if (name === 'cost') {
+    // Validate the valueAmount field to allow only numbers
+    if (name === 'valueAmount') {
       if (!/^\d*\.?\d*$/.test(value)) {
         return; // Prevent updating the state if the value is not a valid number
+      }
     }
   };
-}
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/restoar/', formData)
+    axios.post('http://localhost:8080/restoam/assets', formData)
       .then(response => {
         alert('Asset added successfully!');
-        setFormData({ name: '', description: '', location: '' });
+        setFormData({ name: '', description: '', location: '', valueAmount: '0', valueCurrency: 'GBP' });
       })
       .catch(error => {
         console.error('Error adding asset:', error);
@@ -76,17 +77,32 @@ function AddAsset() {
             required
           />
         </div>
-        <div className="form-group"> 
-        <label htmlFor="cost">Cost</label>
-        <input
-          type="number"
-          className="form-control"
-          id="cost"
-          name="cost"
-          value={formData.cost}
-          onChange={handleChange}
-          required
-        />
+        <div className="form-group">
+          <label htmlFor="valueAmount">Value Amount</label>
+          <input
+            type="number"
+            className="form-control"
+            id="valueAmount"
+            name="valueAmount"
+            value={formData.valueAmount}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="valueCurrency">Currency</label>
+          <select
+            className="form-control"
+            id="valueCurrency"
+            name="valueCurrency"
+            value={formData.valueCurrency}
+            onChange={handleChange}
+            required
+          >
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="BRL">BRL</option>
+          </select>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
         <Link to="/" className="btn btn-secondary ml-2">Back to List</Link>

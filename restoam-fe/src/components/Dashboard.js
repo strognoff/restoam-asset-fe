@@ -12,9 +12,9 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/restoam/assets/all')
+    axios.get('http://localhost:8080/restoam/assets', { params: { page: 0, size: 1000 } })
       .then(response => {
-        setAssets(response.data);
+        setAssets(response.data.content || []);
         setLoading(false);
       })
       .catch(error => {
@@ -24,11 +24,11 @@ function Dashboard() {
   }, []);
 
   const calculateData = () => {
-    const higherThan100 = assets.filter(asset => parseFloat(asset.cost) > 100).length;
+    const higherThan100 = assets.filter(asset => parseFloat(asset.valueAmount) > 100).length;
     const lowerOrEqual100 = assets.length - higherThan100;
 
     return {
-      labels: ['> 100 Pounds', '<= 100 Pounds'],
+      labels: ['> 100 (any currency)', '<= 100 (any currency)'],
       datasets: [
         {
           data: [higherThan100, lowerOrEqual100],
