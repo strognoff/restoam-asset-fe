@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
+
 function EditAsset() {
-  const { id } = useParams(); // Get the asset ID from the URL
-  const navigate = useNavigate(); // For navigation after editing
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -15,12 +17,12 @@ function EditAsset() {
   });
 
   useEffect(() => {
-    // Fetch the asset details to populate the form
-    axios.get(`http://localhost:8080/restoam/assets/${id}`)
-      .then(response => {
+    axios
+      .get(`${API_BASE}/${id}`)
+      .then((response) => {
         setFormData(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching asset details:', error);
         alert('Failed to fetch asset details.');
       });
@@ -33,12 +35,13 @@ function EditAsset() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8080/restoam/assets/${id}`, { ...formData, id })
+    axios
+      .put(`${API_BASE}/${id}`, { ...formData, id })
       .then(() => {
         alert('Asset updated successfully!');
-        navigate('/'); // Redirect to the asset list
+        navigate('/assets');
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error updating asset:', error);
         alert('Failed to update asset.');
       });
@@ -123,7 +126,9 @@ function EditAsset() {
           />
         </div>
         <button type="submit" className="btn btn-primary">Update</button>
-        <button type="button" className="btn btn-secondary ml-2" onClick={() => navigate('/')}>Cancel</button>
+        <button type="button" className="btn btn-secondary ml-2" onClick={() => navigate('/assets')}>
+          Cancel
+        </button>
       </form>
     </div>
   );

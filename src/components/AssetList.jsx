@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8080/restoam/assets';
+const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
@@ -19,24 +19,25 @@ function AssetList() {
 
   const fetchAssets = () => {
     setLoading(true);
-    axios.get(API_BASE, {
-      params: {
-        page,
-        size,
-        sortBy: 'createdDate',
-        sortDir: 'desc',
-        name: filters.name || undefined,
-        location: filters.location || undefined,
-        description: filters.description || undefined,
-        currency: filters.currency || undefined
-      }
-    })
-      .then(response => {
+    axios
+      .get(API_BASE, {
+        params: {
+          page,
+          size,
+          sortBy: 'createdDate',
+          sortDir: 'desc',
+          name: filters.name || undefined,
+          location: filters.location || undefined,
+          description: filters.description || undefined,
+          currency: filters.currency || undefined
+        }
+      })
+      .then((response) => {
         setAssets(response.data.content || []);
         setTotalPages(response.data.totalPages || 0);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching assets:', error);
         setLoading(false);
       });
@@ -47,12 +48,13 @@ function AssetList() {
   }, [page, size, filters]);
 
   const handleDelete = (id) => {
-    axios.delete(`${API_BASE}/${id}`)
+    axios
+      .delete(`${API_BASE}/${id}`)
       .then(() => {
         alert('Asset deleted successfully!');
         fetchAssets();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error deleting asset:', error);
         alert('Failed to delete asset.');
       });
@@ -137,7 +139,7 @@ function AssetList() {
                 </tr>
               </thead>
               <tbody>
-                {assets.map(asset => (
+                {assets.map((asset) => (
                   <tr key={asset.id}>
                     <td>{asset.name}</td>
                     <td>{asset.description}</td>
@@ -147,10 +149,7 @@ function AssetList() {
                     <td>{asset.valueCurrency}</td>
                     <td>
                       <Link to={`/edit/${asset.id}`} className="btn btn-warning mr-2">Edit</Link>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleDelete(asset.id)}
-                      >
+                      <button className="btn btn-danger" onClick={() => handleDelete(asset.id)}>
                         Delete
                       </button>
                     </td>
@@ -188,8 +187,10 @@ function AssetList() {
                     setPage(0);
                   }}
                 >
-                  {[5, 10, 20, 50].map(s => (
-                    <option key={s} value={s}>{s} / page</option>
+                  {[5, 10, 20, 50].map((s) => (
+                    <option key={s} value={s}>
+                      {s} / page
+                    </option>
                   ))}
                 </select>
               </div>

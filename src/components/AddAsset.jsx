@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
+
 function AddAsset() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,27 +13,25 @@ function AddAsset() {
     valueCurrency: 'GBP'
   });
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
 
-    // Validate the valueAmount field to allow only numbers
-    if (name === 'valueAmount') {
-      if (!/^\d*\.?\d*$/.test(value)) {
-        return; // Prevent updating the state if the value is not a valid number
-      }
+    if (name === 'valueAmount' && !/^\d*\.?\d*$/.test(value)) {
+      return;
     }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/restoam/assets', formData)
-      .then(response => {
+    axios
+      .post(API_BASE, formData)
+      .then(() => {
         alert('Asset added successfully!');
         setFormData({ name: '', description: '', location: '', valueAmount: '0', valueCurrency: 'GBP' });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error adding asset:', error);
         alert('Failed to add asset.');
       });
@@ -105,7 +105,7 @@ function AddAsset() {
           </select>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
-        <Link to="/" className="btn btn-secondary ml-2">Back to List</Link>
+        <Link to="/assets" className="btn btn-secondary ml-2">Back to List</Link>
       </form>
     </div>
   );

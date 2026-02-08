@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <img src="images/gear.png" width="30" height="30" className="d-inline-block align-top" alt=""/>
+      <img src="/gear.png" width="30" height="30" className="d-inline-block align-top" alt="" />
       <Link className="navbar-brand" to="/">RestoAM</Link>
       <button
         className="navbar-toggler"
