@@ -38,11 +38,11 @@ function AddAsset() {
   };
 
   return (
-    <div className="container">
-      <h1 className="display-4">Add Asset</h1>
+    <div className="form-section">
+      <h1 className="section-title">Add Asset</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Asset</label>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Asset</label>
           <input
             type="text"
             className="form-control"
@@ -53,8 +53,8 @@ function AddAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">Description</label>
           <input
             type="text"
             className="form-control"
@@ -65,8 +65,8 @@ function AddAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="location">Location</label>
+        <div className="mb-3">
+          <label htmlFor="location" className="form-label">Location</label>
           <input
             type="text"
             className="form-control"
@@ -77,8 +77,8 @@ function AddAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="valueAmount">Value Amount</label>
+        <div className="mb-3">
+          <label htmlFor="valueAmount" className="form-label">Value Amount</label>
           <input
             type="number"
             className="form-control"
@@ -89,10 +89,10 @@ function AddAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="valueCurrency">Currency</label>
+        <div className="mb-3">
+          <label htmlFor="valueCurrency" className="form-label">Currency</label>
           <select
-            className="form-control"
+            className="form-select"
             id="valueCurrency"
             name="valueCurrency"
             value={formData.valueCurrency}
@@ -105,7 +105,7 @@ function AddAsset() {
           </select>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
-        <Link to="/assets" className="btn btn-secondary ml-2">Back to List</Link>
+        <Link to="/" className="btn btn-secondary ms-2">Back to List</Link>
       </form>
     </div>
   );

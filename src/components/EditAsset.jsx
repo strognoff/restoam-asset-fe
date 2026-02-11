@@ -39,7 +39,7 @@ function EditAsset() {
       .put(`${API_BASE}/${id}`, { ...formData, id })
       .then(() => {
         alert('Asset updated successfully!');
-        navigate('/assets');
+        navigate('/');
       })
       .catch((error) => {
         console.error('Error updating asset:', error);
@@ -48,11 +48,11 @@ function EditAsset() {
   };
 
   return (
-    <div className="container">
-      <h1 className="display-4">Edit Asset</h1>
+    <div className="form-section">
+      <h1 className="section-title">Edit Asset</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Asset</label>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Asset</label>
           <input
             type="text"
             className="form-control"
@@ -63,8 +63,8 @@ function EditAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">Description</label>
           <input
             type="text"
             className="form-control"
@@ -75,8 +75,8 @@ function EditAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="location">Location</label>
+        <div className="mb-3">
+          <label htmlFor="location" className="form-label">Location</label>
           <input
             type="text"
             className="form-control"
@@ -87,8 +87,8 @@ function EditAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="valueAmount">Value Amount</label>
+        <div className="mb-3">
+          <label htmlFor="valueAmount" className="form-label">Value Amount</label>
           <input
             type="number"
             className="form-control"
@@ -99,10 +99,10 @@ function EditAsset() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="valueCurrency">Currency</label>
+        <div className="mb-3">
+          <label htmlFor="valueCurrency" className="form-label">Currency</label>
           <select
-            className="form-control"
+            className="form-select"
             id="valueCurrency"
             name="valueCurrency"
             value={formData.valueCurrency}
@@ -114,8 +114,8 @@ function EditAsset() {
             <option value="BRL">BRL</option>
           </select>
         </div>
-        <div className="form-group">
-          <label htmlFor="createdDate">Created Date</label>
+        <div className="mb-3">
+          <label htmlFor="createdDate" className="form-label">Created Date</label>
           <input
             type="text"
             className="form-control"
@@ -126,7 +126,7 @@ function EditAsset() {
           />
         </div>
         <button type="submit" className="btn btn-primary">Update</button>
-        <button type="button" className="btn btn-secondary ml-2" onClick={() => navigate('/assets')}>
+        <button type="button" className="btn btn-secondary ms-2" onClick={() => navigate('/')}>
           Cancel
         </button>
       </form>

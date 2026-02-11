@@ -48,10 +48,11 @@ function AssetList() {
   }, [page, size, filters]);
 
   const handleDelete = (id) => {
+    if (!window.confirm('Delete this asset?')) return;
+
     axios
       .delete(`${API_BASE}/${id}`)
       .then(() => {
-        alert('Asset deleted successfully!');
         fetchAssets();
       })
       .catch((error) => {
@@ -68,15 +69,16 @@ function AssetList() {
 
   return (
     <div>
-      <div className="main_asset">
-        <div className="jumbotron">
-          <h1 className="display-4">Asset</h1>
-          <p className="lead">This is a simple Asset list screen, please select your asset at the table below for more details.</p>
-          <Link to="/add" className="btn btn-primary btn-lg" role="button">Add Asset</Link>
+      <div className="form-section mb-4">
+        <h1 className="section-title">Assets</h1>
+        <p className="text-muted">Manage your assets and keep inventory details up to date.</p>
+        <div className="card-header-actions">
+          <Link to="/add" className="btn btn-primary">Add Asset</Link>
         </div>
       </div>
-      <div className="container">
-        <div className="row mb-3">
+
+      <div className="form-section">
+        <div className="row g-3 mb-3">
           <div className="col-md-3">
             <input
               type="text"
@@ -109,7 +111,7 @@ function AssetList() {
           </div>
           <div className="col-md-3">
             <select
-              className="form-control"
+              className="form-select"
               name="currency"
               value={filters.currency}
               onChange={handleFilterChange}
@@ -126,51 +128,55 @@ function AssetList() {
           <p>Loading assets...</p>
         ) : (
           <>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Asset</th>
-                  <th>Description</th>
-                  <th>Location</th>
-                  <th>Created</th>
-                  <th>Value</th>
-                  <th>Currency</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {assets.map((asset) => (
-                  <tr key={asset.id}>
-                    <td>{asset.name}</td>
-                    <td>{asset.description}</td>
-                    <td>{asset.location}</td>
-                    <td>{asset.createdDate ? new Date(asset.createdDate).toLocaleString() : '-'}</td>
-                    <td>{asset.valueAmount}</td>
-                    <td>{asset.valueCurrency}</td>
-                    <td>
-                      <Link to={`/edit/${asset.id}`} className="btn btn-warning mr-2">Edit</Link>
-                      <button className="btn btn-danger" onClick={() => handleDelete(asset.id)}>
-                        Delete
-                      </button>
-                    </td>
+            <div className="table-responsive">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Created</th>
+                    <th>Value</th>
+                    <th>Currency</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {assets.map((asset) => (
+                    <tr key={asset.id}>
+                      <td>{asset.name}</td>
+                      <td>{asset.description}</td>
+                      <td>{asset.location}</td>
+                      <td>{asset.createdDate ? new Date(asset.createdDate).toLocaleString() : '-'}</td>
+                      <td>{asset.valueAmount}</td>
+                      <td>{asset.valueCurrency}</td>
+                      <td>
+                        <Link to={`/edit/${asset.id}`} className="btn btn-sm btn-warning me-2">
+                          Edit
+                        </Link>
+                        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(asset.id)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center mt-3">
               <div>
                 <button
-                  className="btn btn-secondary mr-2"
+                  className="btn btn-outline-secondary me-2"
                   onClick={() => setPage(Math.max(page - 1, 0))}
                   disabled={page === 0}
                 >
                   Prev
                 </button>
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-outline-secondary"
                   onClick={() => setPage(Math.min(page + 1, totalPages - 1))}
-                  disabled={page >= totalPages - 1}
+                  disabled={page >= totalPages - 1 || totalPages === 0}
                 >
                   Next
                 </button>
@@ -180,7 +186,7 @@ function AssetList() {
               </div>
               <div>
                 <select
-                  className="form-control"
+                  className="form-select"
                   value={size}
                   onChange={(e) => {
                     setSize(Number(e.target.value));

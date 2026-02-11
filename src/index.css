@@ -1,35 +1,3 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
-
-@font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom-font.woff2') format('woff2'),
-       url('/fonts/custom-font.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-body {
-  font-family: 'CustomFont', sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-}
-
-p, a, button {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-}
-
-.jumbotron {
-  padding: 1rem 0.5rem;
-}
-
-.main_asset,
-.main_dash {
-  padding: 10px;
-  background-color: white;
-}

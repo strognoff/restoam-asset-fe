@@ -1,47 +1,32 @@
-# RestoAM Asset Management (Frontend)
+# RestoAM Asset Frontend
 
-React + Vite frontend for the RestoAM asset management service.
+React + Vite frontend for managing RestoAM Assets.
 
-## Requirements
+## Configure API
 
-- Node.js 18+
-- API running (default: `http://localhost:8080/restoam/assets`)
-
-## Environment
-
-Set the API base URL via:
-
-```
+```bash
 VITE_ASSET_API=http://localhost:8080/restoam/assets
-```
-
-## Install
-
-```
-npm install
+VITE_LOCATION_APP_URL=http://localhost:5174
+VITE_WORKORDER_APP_URL=http://localhost:5175
 ```
 
 ## Run
 
-```
+```bash
+npm install
 npm run dev
 ```
 
-## Build
+## Tests
 
-```
-npm run build
-```
-
-## E2E Tests (Playwright)
-
-```
+```bash
+npx playwright install --with-deps
 npm run test:e2e
 ```
 
-## Pages
+## Routes
 
-- `/` Dashboard (summary chart)
-- `/assets` Asset list + filters + pagination
+- `/` Asset list
+- `/assets` Asset list (alias)
 - `/add` Add asset
 - `/edit/:id` Edit asset
