@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import CopyIdField from './CopyIdField';
 
 const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
 
@@ -51,6 +52,7 @@ function EditAsset() {
     <div className="form-section">
       <h1 className="section-title">Edit Asset</h1>
       <form onSubmit={handleSubmit}>
+        <CopyIdField id={id} label="Asset ID" />
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Asset</label>
           <input
