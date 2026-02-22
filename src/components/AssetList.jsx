@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import EmptyState from './EmptyState';
 
 const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
 
@@ -67,6 +68,20 @@ function AssetList() {
     setPage(0);
   };
 
+  const clearFilters = () => {
+    setFilters({
+      name: '',
+      location: '',
+      description: '',
+      currency: ''
+    });
+    setPage(0);
+  };
+
+  const hasActiveFilters = () => {
+    return filters.name || filters.location || filters.description || filters.currency;
+  };
+
   return (
     <div>
       <div className="form-section mb-4">
@@ -126,6 +141,13 @@ function AssetList() {
 
         {loading ? (
           <p>Loading assets...</p>
+        ) : assets.length === 0 ? (
+          <EmptyState 
+            hasFilters={hasActiveFilters()}
+            onClearFilters={clearFilters}
+            entityName="Asset"
+            createPath="/add"
+          />
         ) : (
           <>
             <div className="table-responsive">
