@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import EmptyState from './EmptyState';
+import { usePersistedFilters } from '../hooks/usePersistedFilters';
 
 const API_BASE = import.meta.env.VITE_ASSET_API || 'http://localhost:8080/restoam/assets';
+
+const initialFilters = {
+  name: '',
+  location: '',
+  description: '',
+  currency: ''
+};
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
@@ -11,12 +19,8 @@ function AssetList() {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [filters, setFilters] = useState({
-    name: '',
-    location: '',
-    description: '',
-    currency: ''
-  });
+  
+  const { filters, setFilters, clearFilters, hasActiveFilters } = usePersistedFilters('asset-filters', initialFilters);
 
   const fetchAssets = () => {
     setLoading(true);
@@ -68,18 +72,9 @@ function AssetList() {
     setPage(0);
   };
 
-  const clearFilters = () => {
-    setFilters({
-      name: '',
-      location: '',
-      description: '',
-      currency: ''
-    });
+  const handleClearFilters = () => {
+    clearFilters();
     setPage(0);
-  };
-
-  const hasActiveFilters = () => {
-    return filters.name || filters.location || filters.description || filters.currency;
   };
 
   return (
@@ -139,12 +134,26 @@ function AssetList() {
           </div>
         </div>
 
+        {hasActiveFilters() && (
+          <div className="d-flex align-items-center gap-2 mb-3">
+            <span className="badge bg-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16" className="me-1">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+              Filters active
+            </span>
+            <button className="btn btn-sm btn-outline-secondary" onClick={handleClearFilters}>
+              Clear Filters
+            </button>
+          </div>
+        )}
+
         {loading ? (
           <p>Loading assets...</p>
         ) : assets.length === 0 ? (
           <EmptyState 
             hasFilters={hasActiveFilters()}
-            onClearFilters={clearFilters}
+            onClearFilters={handleClearFilters}
             entityName="Asset"
             createPath="/add"
           />
